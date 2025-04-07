@@ -1,26 +1,20 @@
-[tool.poetry]
+[project]
 name = "trpl-m"
 version = "1.0.0"
+authors = [{"Grant Achuzia", email="achuziaduby@gmail.com"}]
 description = "Mental math game in your terminal"
-authors = ["Grant Achuzia <achuziaduby@gmail.com>"]
-license = "MIT"
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Topic :: Games/Entertainment"
+    "Operating System :: OS Independent",
 ]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
 
-[tool.poetry.dependencies]
-python = ">=3.6"
-rich = ">=13.0.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "^6.0"
-
-[tool.poetry.scripts]
-trpl_m = "trpl_m.main:Trplm"
+[project.urls]
+Homepage = "https://github.com/GAchuzia/trpl-m"
+Issues = "https://github.com/GAchuzia/trpl-m/issues"
 
 [build-system]
-requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
