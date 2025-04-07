@@ -20,5 +20,6 @@ requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.entry_points]
-console_scripts =
-    trpl-m = "trpl_m_GAchuzia.main:main"
+console_scripts = [
+    "trpl-m = trpl_m_GAchuzia.main:main"
+]
