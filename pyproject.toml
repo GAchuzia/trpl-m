@@ -18,3 +18,6 @@ Issues = "https://github.com/GAchuzia/trpl-m/issues"
 [build-system]
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
+
+[project.scripts]
+trpl_m = "trpl_m.main:main"
