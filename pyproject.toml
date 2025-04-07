@@ -1,6 +1,6 @@
 [project]
 name = "trpl-m"
-version = "1.0.0"
+version = "1.0.1"
 authors = [{name = "Grant Achuzia", email = "achuziaduby@gmail.com"}]
 description = "Mental math game in your terminal"
 readme = "README.md"
@@ -18,3 +18,6 @@ Issues = "https://github.com/GAchuzia/trpl-m/issues"
 [build-system]
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
+
+[tool.poetry.scripts]
+trpl-m = "trpl_m_GAchuzia.main:main"
