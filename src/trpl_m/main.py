@@ -153,10 +153,12 @@ class SettingsMenu:
                 console.print("[red]Enter A Valid Response[/red]")
                 time.sleep(0.7)
 
+def main():
+    game = Trplm()
 
 if __name__ == "__main__":
     try:
-        Trplm()
+        main()
     except KeyboardInterrupt:
         console.clear()
  
