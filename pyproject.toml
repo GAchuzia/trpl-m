@@ -1,23 +1,36 @@
-[project]
-name = "trpl-m"
-version = "1.0.6"
-authors = [{name = "Grant Achuzia", email = "achuziaduby@gmail.com"}]
-description = "Mental math game in your terminal"
-readme = "README.md"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
-
-[project.urls]
-Homepage = "https://github.com/GAchuzia/trpl-m"
-Issues = "https://github.com/GAchuzia/trpl-m/issues"
-
 [build-system]
-requires = ["setuptools >= 77.0.3"]
+requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "trplm"
+version = "0.1.0"
+description = "Practice mental math in the terminal."
+readme = "README.md"
+requires-python = ">=3.11"
+
+authors = [
+    {name = "Grant Achuzia", email = "grant.achuzia@lumetnum.com"},
+]
+
+dependencies = [
+    "markdown-it-py>=3.0.0",
+    "mdurl>=0.1.2",
+    "Pygments>=2.19.1",
+    "rich>=13.9.4",
+    "setuptools>=78.1.0",
+]
+
+[project.optional-dependecies]
+dev = [
+    "pytest>=8.4.0",
+    "black>=25.1.0",
+    "flake8>=7.2.0",
+]
+
 [project.scripts]
-trpl_m = "trpl_m.main:main"
+trplm = "trplm.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["trplm*", "trplm.*"]
