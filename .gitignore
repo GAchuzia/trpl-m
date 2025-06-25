@@ -1,3 +1,20 @@
-*venv/
+# Byte-compiled
 __pycache__/
-*dist/
+*.py[cod]
+
+# Distribution / packaging
+.Python
+build/
+dist/
+eggs/
+*.egg-info/
+
+# Environments
+.env
+.venv
+env/
+venv/
+rgenv/
+
+# PyPI config
+.pypirc
