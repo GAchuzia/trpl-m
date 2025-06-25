@@ -1,0 +1,110 @@
+name: Autorelease on Version Bump
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ main ]
+    paths:   [ "pyproject.toml" ]
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth:       0 
+          token:             ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Compare versions in .toml files
+        id: compare_versions
+        shell: pwsh
+        run: |
+          # Determine diff against HEAD^ (or empty tree on initial commit)
+          & git rev-parse --verify HEAD^ 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            $diff = git diff --name-only HEAD^ HEAD
+          } else {
+            Write-Host "No previous commit found. Comparing against empty tree..."
+            $emptyTree = git hash-object -t tree /dev/null
+            $diff = git diff --name-only $emptyTree HEAD
+          }
+
+          # Filter for .toml files
+          $tomlFiles = $diff | Where-Object { $_ -like '*.toml' }
+
+          $subprojects = @()
+          foreach ($file in $tomlFiles) {
+            if (-not (Test-Path $file)) { continue }
+            
+            # Grab the old and new version strings
+            $newLine = Select-String -Path $file -Pattern '^\s*version\s*=\s*".*"$'
+            $newVer  = ($newLine.Line -replace '^\s*version\s*=\s*"([^"]+)".*','$1')
+            $oldContent = git show HEAD^:$file 2>$null
+            $oldLine    = ($oldContent | Select-String -Pattern '^\s*version\s*=\s*".*"$')
+            $oldVer     = ($oldLine.Line -replace '^\s*version\s*=\s*"([^"]+)".*','$1')
+
+            if (-not $oldVer -or -not $newVer) { continue }
+
+            # Parse as [version] objects
+            $oldV = [version]$oldVer
+            $newV = [version]$newVer
+
+            # Only consider major or minor increases
+            if ($newV.Major -gt $oldV.Major -or
+                ($newV.Major -eq $oldV.Major -and $newV.Minor -gt $oldV.Minor)) {
+              $subprojects += "File: $file, Old: $oldVer, New: $newVer"
+            }
+          }
+
+          # Emit outputs only if at least one major/minor bump was found
+          if ($subprojects.Count -gt 0) {
+            Write-Output "version_changed=true" >> $Env:GITHUB_OUTPUT
+            $changes = $subprojects -join "`n"
+            Write-Output "changes_str<<EOF" >> $Env:GITHUB_OUTPUT
+            Write-Output "$changes"       >> $Env:GITHUB_OUTPUT
+            Write-Output "EOF"            >> $Env:GITHUB_OUTPUT
+            Write-Host "Detected MAJOR/MINOR version changes:`n$changes"
+          }
+          else {
+            Write-Output "version_changed=false" >> $Env:GITHUB_OUTPUT
+            Write-Host "No major or minor version changes in .toml files."
+          }
+
+
+      - name: Create & push Git tag
+        id: create_tag
+        if: >-
+          github.event_name == 'push'
+          && steps.compare_versions.outputs.version_changed == 'true'
+        shell: pwsh
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Read the new project version from pyproject.toml
+          $projVer = (Get-Content pyproject.toml |
+                      Select-String '^\s*version\s*=\s*"(.*)"$').Matches[0].Groups[1].Value
+
+          $tag = "v$projVer"
+          git tag  $tag
+          git push origin $tag
+          Write-Output "tag=$tag" >> $Env:GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: >-
+          github.event_name == 'push'
+          && steps.compare_versions.outputs.version_changed == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+          name:     "Version bump: ${{ steps.create_tag.outputs.tag }}"
+          body: |
+            The following .toml versions were updated:
+            ${{ steps.compare_versions.outputs.changes_str }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
