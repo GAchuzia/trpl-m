@@ -34,4 +34,4 @@ jobs:
     # Publish to PyPI (using your PyPI token secret)
     - name: Publish to PyPI
       run: |
-        twine upload dist/* --username __token__ --password $Env:PYPI_API_TOKEN
+        twine upload dist/* --username __token__ --password "$PYPI_API_TOKEN"
