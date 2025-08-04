@@ -1,16 +1,18 @@
 # TRPL-M
 
-Got some time to spare? Then master mental math!
+**M**aster **M**ental **M**ath in your terminal
 
-## Installation
+## Requirements
 
-In your terminal run the following command:
+- **Python** 3.11 or higher  
+
+All other dependencies (`rich`, etc.) are pulled in automatically.
+
+## Installation & Usage
 
 ```bash
+# Install from PyPI and run
 pip install trpl-m
 trpl-m
 ```
 
-## License
-
-MIT License - more details in the  [LICENSE](LICENSE) file.
