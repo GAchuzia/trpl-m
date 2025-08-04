@@ -3,8 +3,8 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "trplm"
-version = "2.0.0"
+name = "trpl-m"
+version = "2.1.0"
 description = "Practice mental math in the terminal."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -30,7 +30,7 @@ dev = [
 ]
 
 [project.scripts]
-trplm = "trplm.trplm:main"
+trpl-m = "trplm.trplm:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
