@@ -102,7 +102,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.create_tag.outputs.tag }}
-          name:     "Version bump: ${{ steps.create_tag.outputs.tag }}"
+          name:     "${{ steps.create_tag.outputs.tag }}"
           body: |
             The following .toml versions were updated:
             ${{ steps.compare_versions.outputs.changes_str }}
