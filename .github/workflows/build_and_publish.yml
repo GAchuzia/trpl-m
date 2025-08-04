@@ -33,5 +33,16 @@ jobs:
 
     # Publish to PyPI (using your PyPI token secret)
     - name: Publish to PyPI
+      env:
+        # this secret must be created in Settings → Secrets → Actions
+        PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        # or, for twine’s built-in support:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        twine upload dist/* --username __token__ --password "$PYPI_API_TOKEN"
+        python -m pip install --upgrade twine
+
+        twine upload dist/* \
+          --username __token__ \
+          --password "$PYPI_API_TOKEN"
+
