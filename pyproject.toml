@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "trplm"
-version = "0.1.0"
+version = "1.0.0"
 description = "Practice mental math in the terminal."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -29,8 +29,10 @@ dev = [
 ]
 
 [project.scripts]
-trplm = "trplm.cli:main"
+trplm = "trplm.trplm:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["trplm*", "trplm.*"]
+
+[tool.pre-commit]
