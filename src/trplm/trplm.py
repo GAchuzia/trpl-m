@@ -58,8 +58,6 @@ def get_last_settings():
     else:
         console.print("No previous settings found.", style="bold red")
         return None
-
-
 def record_session(settings, score, duration):
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
