@@ -30,8 +30,6 @@ def init_db():
     )
     conn.commit()
     conn.close()
-
-
 def get_last_settings():
     """Fetch the most recent game settings from the database."""
     conn = sqlite3.connect(DB_FILE)
