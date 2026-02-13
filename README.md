@@ -1,6 +1,6 @@
 # TRPL-M
 
-**M**aster **M**ental **M**ath in your terminal
+**M**aster **M**ental **M**ath
 
 ## Requirements
 
